@@ -1,0 +1,15 @@
+import pandas as pd
+import geopandas as gpd
+from shapely import wkt 
+from shapely.geometry import Point
+
+merged["geometry"] = merged["geometry"].apply(wkt.loads)
+merged = gpd.GeoDataFrame(merged, geometry="geometry") # convering pandas dataframe to geodataframe
+
+merged = merged.set_crs(epsg=27700)
+
+centre = Point(530047, 180318) # this is the centre of London
+
+merged["dm"] = merged.centroid.distance(centre) 
+merged["dkm"] = merged["distance_m"] / 1000
+merged["dkm"].head()
