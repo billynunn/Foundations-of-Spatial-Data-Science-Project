@@ -1,0 +1,9 @@
+import pandas as pd 
+
+aq = pd.read_csv("/Users/billy/Downloads/AirQuality-13-16-19-London-21geog-data.csv")
+census = pd.read_csv("/Users/billy/Downloads/UKCensus-21-11-London-21geog-data.csv")
+
+census = gpd.GeoDataFrame(census)
+
+merged = pd.merge(census, aq, how='left', on='LSOA21CD')
+merged.head() # check if merged correctly
