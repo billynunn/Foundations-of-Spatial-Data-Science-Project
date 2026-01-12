@@ -1,0 +1,20 @@
+
+import numpy as np 
+from scipy.optimize import curve_fit
+
+LSOA = merged[["LSOA21CD", "dkm", "PM25-2013-mean"]].copy()
+LAD = merged.groupby("LAD22CD", as_index=False).agg({
+    "distance_km": "mean",
+    "PM25-2013-mean": "mean"
+})
+
+def power_law(x, alpha, beta):
+return alpha * x**(-beta)
+
+x = merged[dkm].to_numpy()
+y = merged[LSOA].to_numpy()
+
+params, cov = curve_fit(power_law, x, y, maxfev=10000)
+alpha, beta = params
+
+print(f"PM2.5 = {alpha:.3f} * distance^-{beta:.3f}")
