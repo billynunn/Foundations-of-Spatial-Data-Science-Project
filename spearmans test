@@ -1,0 +1,30 @@
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.stats import spearmanr
+
+rho_lsoa, p_lsoa = spearmanr(LSOA["dkm"], LSOA["PM25-2013-mean"], nan_policy="omit")
+rho_lad, p_lad = spearmanr(LAD["dkm"], LAD["PM25-2013-mean"], nan_policy="omit")
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+
+sns.scatterplot(data=LSOA, x="dkm", y="PM25-2013-mean", ax=axes[0], alpha=0.6)
+sns.regplot(data=LSOA, x="dkm", y="PM25-2013-mean", scatter=False, ax=axes[0], color="red")
+axes[0].set_title("LSOA", fontsize=12)
+axes[0].set_xlabel("Distance from City Centre (km)", fontsize=11)
+axes[0].set_ylabel("PM2.5 Concentration  ($\mu g\ m^{-3}$", fontsize=11)
+axes[0].tick_params(axis="both", labelsize=10)
+axes[0].text(0.5, -0.18, f"Spearman ρ = {rho_lsoa:.3f}, p = {p_lsoa:.3g}", transform=axes[0].transAxes, ha="center", va="top", fontsize=10)
+# x and y depends on data; because there is no y lim or x lim it can change. but i found that 0.5, -0.18 is best position 
+
+sns.scatterplot(data=LAD, x="dkm", y="PM25-2013-mean",ax=axes[1], alpha=0.7)
+sns.regplot(data=LAD, x="dkm", y="PM25-2013-mean", scatter=False, ax=axes[1],color="red")
+axes[1].set_title("LAD", fontsize=12)
+axes[1].set_xlabel("Distance from City Centre (km)", fontsize=11)
+axes[1].set_ylabel("PM2.5 Concentration  ($\mu g\ m^{-3}$", fontsize=11)
+axes[1].tick_params(axis="both", labelsize=10)
+axes[1].text(0.5, -0.18, f"Spearman ρ = {rho_lad:.3f}, p = {p_lad:.3g}", transform=axes[1].transAxes, ha="center", va="top", fontsize=10)
+
+fig.suptitle("Distance from London City Centre plotted against PM2.5 Concentrations", fontsize=14, y=1.05)
+plt.tight_layout()
+plt.savefig("SPEAR.png", dpi=300)
+plt.show()
