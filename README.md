@@ -11,4 +11,5 @@ This repository includes details on:
 - the percentage change between PM2.5 concentrations from 2013, and PM2.5 concentrations from 2019.
 
 # Requirements
-JupyterLab Python 3.10+
+`JupyterLab`
+`Python 3.10+`
